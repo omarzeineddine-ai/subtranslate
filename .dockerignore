@@ -1,0 +1,16 @@
+# Secrets: the build stage copies the whole tree, so anything listed here
+# never reaches an image layer.
+.env
+.env*
+node_modules
+.next
+.git
+# Local tooling and test files the server never imports.
+.claude
+.agents
+__tests__
+.DS_Store
+# Local subtitle samples and screenshots.
+*.srt
+/*.jpg
+/*.png

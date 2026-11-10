@@ -1,0 +1,12 @@
+services:
+  subtranslate:
+    build:
+      context: .
+      args:
+        - SITE_URL
+        - GOOGLE_SITE_VERIFICATION
+    image: subtranslate
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local

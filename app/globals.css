@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-feature-settings:
+    "liga" 1,
+    "calt" 1,
+    "dlig" 1,
+    "zero" 1,
+    "tnum" 1;
+
+  /* Dark (default) */
+  --bg: #0f1014;
+  --bg-card: #1a1c23;
+  --bg-elevated: #27292D;
+  --text: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --border: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.2);
+  --ring: rgba(255, 255, 255, 0.1);
+  color-scheme: dark;
+}
+
+.light {
+  --bg: #ffffff;
+  --bg-card: #f4f4f5;
+  --bg-elevated: #e4e4e7;
+  --text: #0f1014;
+  --text-secondary: #52525b;
+  --text-muted: #a1a1aa;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(0, 0, 0, 0.15);
+  --ring: rgba(0, 0, 0, 0.08);
+  color-scheme: light;
+}
+
+@layer base {
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    @apply antialiased;
+  }
+
+  ::selection {
+    @apply text-white bg-blue-500;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+  }
+
+  [id] {
+    scroll-margin-top: 5rem;
+  }
+}
+
+/* Hide the layout chrome and lock the viewport while a page declares busy mode
+   (e.g. the translation flow on /translate). Lets the page render a focused,
+   single-screen progress UI without losing the shared nav/footer everywhere else. */
+body[data-busy="true"] {
+  height: 100svh;
+  overflow: hidden;
+}
+body[data-busy="true"] > header,
+body[data-busy="true"] > footer {
+  display: none;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  background: var(--text);
+  color: var(--bg);
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* Theme-aware utility classes */
+.bg-page { background-color: var(--bg); }
+.bg-card { background-color: var(--bg-card); }
+.bg-elevated { background-color: var(--bg-elevated); }
+.text-primary { color: var(--text); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+.border-themed { border-color: var(--border); }
+.ring-themed { --tw-ring-color: var(--ring); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #52525b; }
+
+.tabular-nums { font-variant-numeric: tabular-nums; }
+
+/* Theme transition */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Page entrance animations */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.7s ease-out both;
+}
+
+.anim-delay-1 { animation-delay: 100ms; }
+.anim-delay-2 { animation-delay: 200ms; }
+.anim-delay-3 { animation-delay: 300ms; }
+.anim-delay-4 { animation-delay: 400ms; }
+.anim-delay-5 { animation-delay: 500ms; }
+.anim-delay-6 { animation-delay: 700ms; }
+
+/* Rotating status crossfade (used during translation) */
+@keyframes status-swap {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-status-swap { animation: status-swap 0.4s ease-out both; }
+
+/* Live-preview card: gentle entrance whenever the latest segment changes */
+@keyframes preview-pulse {
+  0%   { opacity: 0; transform: scale(0.985); }
+  60%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.animate-preview-pulse { animation: preview-pulse 0.5s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
